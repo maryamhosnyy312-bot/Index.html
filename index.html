@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(135deg, #000, #1a0000);
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translate(-50%, -60%);}
+    to {opacity: 1; transform: translate(-50%, -50%);}
+}
+
+input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 220px;
+    text-align: center;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 25px;
+    border-radius: 10px;
+    border: none;
+    background: red;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 0 15px red;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.hidden {
+    display: none;
+}
+
+.shake {
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0% { transform: translate(-50%, -50%) translateX(0); }
+    25% { transform: translate(-50%, -50%) translateX(-5px); }
+    50% { transform: translate(-50%, -50%) translateX(5px); }
+    75% { transform: translate(-50%, -50%) translateX(-5px); }
+    100% { transform: translate(-50%, -50%) translateX(0); }
+}
+
+.gallery img {
+    width: 120px;
+    margin: 10px;
+    border-radius: 15px;
+    animation: floatImg 3s ease-in-out infinite;
+}
+
+@keyframes floatImg {
+    0% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+    100% {transform: translateY(0);}
+}
+
+.hearts {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.heart {
+    position: absolute;
+    color: red;
+    font-size: 20px;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+#finalMessage {
+    white-space: pre-line;
+    font-size: 18px;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 1️⃣ صفحة التاريخ -->
+<div class="container" id="start">
+    <h2>Do you remember this date? 💭</h2>
+    <input type="text" id="dateInput" placeholder="Enter the special date">
+    <br><br>
+    <button onclick="checkDate()">Submit ❤️</button>
+    <p id="error" style="color:#ff4d4d;"></p>
+    <p id="hint" style="color:gray;"></p>
+</div>
+
+<!-- 2️⃣ المفاجأة -->
+<div class="container hidden" id="surprise">
+    <h1>Happy Birthday My Love ❤️</h1>
+    <p>You mean everything to me 💖</p>
+
+    <div class="gallery">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+        <img src="photo3.jpg">
+        <img src="photo4.jpg">
+    </div>
+
+    <p id="finalMessage"></p>
+
+    <audio autoplay loop>
+        <source src="amrdiabhabebe.mp3" type="audio/mp3">
+    </audio>
+</div>
+
+<div class="hearts" id="hearts"></div>
+
+<script>
+const correctDate ="1/1/2026"
+let attempts = 0;
+
+const messageText = /n "Happy birthday to First love , my favieee, /n "my ride or die, my cupid , my person , my safeplace
+ "Life hit different the day you walked in. You didnt just make it better,you made it make sense. You love so hard, so real and I'll never stop being grateful for that. You've made my life a happier, safer, wilder Place. 
+"Thank you for bring my spark back again and Take my hands to show me how the real, true love was❤️";
+
+let index = 0;
+
+function typeMessage() {
+    if (index < messageText.length) {
+        document.getElementById("finalMessage").innerHTML += messageText.charAt(index);
+        index++;
+        setTimeout(typeMessage, 50);
+    }
+}
+
+function checkDate() {
+    let input = document.getElementById("dateInput").value;
+    let box = document.getElementById("start");
+
+    if (input === correctDate) {
+        document.getElementById("start").classList.add("hidden");
+        document.getElementById("surprise").classList.remove("hidden");
+        setInterval(createHeart, 300);
+        typeMessage();
+    } else {
+        attempts++;
+        box.classList.add("shake");
+        setTimeout(() => box.classList.remove("shake"), 300);
+
+        if (attempts === 1) {
+            document.getElementById("error").innerText = "Wrong 😢";
+            document.getElementById("hint").innerText = "Hint: Our special day 💕";
+        } 
+        else if (attempts === 2) {
+            document.getElementById("error").innerText = "Still wrong 😭";
+            document.getElementById("hint").innerText = "Hint: The day everything started ✨";
+        } 
+        else {
+            document.getElementById("error").innerText = "Last chance 💔";
+            document.getElementById("hint").innerText = "Think carefully...";
+        }
+    }
+}
+
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerText = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.getElementById("hearts").appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+}
+</script>
+
+</body>
+</html>
