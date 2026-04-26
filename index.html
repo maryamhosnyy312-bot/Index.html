@@ -7,7 +7,7 @@
 body {
     margin: 0;
     font-family: Arial;
-    background: linear-gradient(135deg, #000, #1a0000);
+    background: #000000; /* خلفية سوداء صافية */
     color: white;
     text-align: center;
     overflow: hidden;
@@ -66,11 +66,11 @@ button:hover {
     100% { transform: translate(-50%, -50%) translateX(0); }
 }
 
-.gallery img {
-    width: 120px;
-    margin: 10px;
+  #slideshow {
+    width: 300px; /* حجم الصورة */
     border-radius: 15px;
-    animation: floatImg 3s ease-in-out infinite;
+    transition: opacity 1s ease-in-out; /* تأثير fade سلس */
+}
 }
 
 @keyframes floatImg {
@@ -119,19 +119,15 @@ button:hover {
 
 <!-- 2️⃣ المفاجأة -->
 <div class="container hidden" id="surprise">
-    <h1>Happy Birthday My Love ❤️</h1>
-    <p>You mean everything to me 💖</p>
+    <h1>Happy Birthday habebe ❤️</h1>
 
-    <div class="gallery">
-        <img src="photo1.jpg">
-        <img src="photo2.jpg">
-        <img src="photo3.jpg">
-        <img src="photo4.jpg">
-    </div>
+   <div class="gallery">
+    <img id="slideshow" src="photo1.jpg">
+</div>
 
     <p id="finalMessage"></p>
 
-    <audio autoplay loop>
+    <audio id="myAudio" loop>
         <source src="amrdiabhabebe.mp3" type="audio/mp3">
     </audio>
 </div>
@@ -142,10 +138,7 @@ button:hover {
 const correctDate ="1/1/2026"
 let attempts = 0;
 
-const messageText = /n "Happy birthday to First love , my favieee, /n "my ride or die, my cupid , my person , my safeplace
- "Life hit different the day you walked in. You didnt just make it better,you made it make sense. You love so hard, so real and I'll never stop being grateful for that. You've made my life a happier, safer, wilder Place. 
-"Thank you for bring my spark back again and Take my hands to show me how the real, true love was❤️";
-
+const messageText = "Happy birthday to First love , my favieee, \n my ride or die, my cupid , my person , my safeplace \n Life hit different the day you walked in. You didnt just make it better,you made it make sense. You love so hard, so real and I'll never stop being grateful for that. You've made my life a happier, safer, wilder Place.\n thank you for bring my spark back again and Take my hands to show me how the real, true love was.. we can fight ,get mad , and argue but at the end of day you're still my man and illooveeeuuu❤️"
 let index = 0;
 
 function typeMessage() {
@@ -155,16 +148,30 @@ function typeMessage() {
         setTimeout(typeMessage, 50);
     }
 }
-
 function checkDate() {
     let input = document.getElementById("dateInput").value;
     let box = document.getElementById("start");
 
     if (input === correctDate) {
+        // اخفاء صفحة الباسورد
         document.getElementById("start").classList.add("hidden");
         document.getElementById("surprise").classList.remove("hidden");
+
+        // تشغيل الأغنية
+var audio = document.getElementById("myAudio");
+
+document.body.addEventListener("click", function () {
+    audio.play();
+}, { once: true });
+
+document.body.onclick = () => audio.play();
+
+        // القلوب
         setInterval(createHeart, 300);
-        typeMessage();
+
+        // الرسالة الكبيرة
+        setTimeout(typeMessage, 1000);
+
     } else {
         attempts++;
         box.classList.add("shake");
@@ -194,6 +201,22 @@ function createHeart() {
 
     setTimeout(() => heart.remove(), 5000);
 }
+// Slideshow الصور
+const images = ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg"];
+let currentIndex = 0;
+const slideshow = document.getElementById("slideshow");
+
+function nextImage() {
+    slideshow.style.opacity = 0; // fade out
+    setTimeout(() => {
+        currentIndex = (currentIndex + 1) % images.length;
+        slideshow.src = images[currentIndex];
+        slideshow.style.opacity = 1; // fade in
+    }, 500);
+}
+
+// بدء العرض بعد ظهور صفحة المفاجأة
+setInterval(nextImage, 3000); // كل 3 ثواني صورة جديدة
 </script>
 
 </body>
